@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		186112642B54466B00472E74 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186112632B54466B00472E74 /* StorageManager.swift */; };
 		186249C52B51B9F400B51721 /* MainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 186249C42B51B9F400B51721 /* MainCell.swift */; };
 		18FB44742B517D5300C6F3B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FB44732B517D5300C6F3B2 /* AppDelegate.swift */; };
 		18FB44762B517D5300C6F3B2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18FB44752B517D5300C6F3B2 /* SceneDelegate.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		186112632B54466B00472E74 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		186249C42B51B9F400B51721 /* MainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCell.swift; sourceTree = "<group>"; };
 		18FB44702B517D5300C6F3B2 /* RealmExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RealmExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18FB44732B517D5300C6F3B2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -45,6 +47,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		186112622B54465100472E74 /* StorageManager */ = {
+			isa = PBXGroup;
+			children = (
+				186112632B54466B00472E74 /* StorageManager.swift */,
+			);
+			path = StorageManager;
+			sourceTree = "<group>";
+		};
 		186249C22B51B79800B51721 /* NetworkApiMeneger */ = {
 			isa = PBXGroup;
 			children = (
@@ -79,6 +89,7 @@
 		18FB44722B517D5300C6F3B2 /* RealmExample */ = {
 			isa = PBXGroup;
 			children = (
+				186112622B54465100472E74 /* StorageManager */,
 				186249C22B51B79800B51721 /* NetworkApiMeneger */,
 				18FB44902B51816500C6F3B2 /* RealmManager */,
 				18FB448F2B517F1B00C6F3B2 /* Controller */,
@@ -205,6 +216,7 @@
 				18FB44942B51825900C6F3B2 /* Note.swift in Sources */,
 				18FB44782B517D5300C6F3B2 /* ViewController.swift in Sources */,
 				186249C52B51B9F400B51721 /* MainCell.swift in Sources */,
+				186112642B54466B00472E74 /* StorageManager.swift in Sources */,
 				18FB44922B51818000C6F3B2 /* RealmManager.swift in Sources */,
 				18FB44742B517D5300C6F3B2 /* AppDelegate.swift in Sources */,
 				18FB44762B517D5300C6F3B2 /* SceneDelegate.swift in Sources */,
@@ -355,6 +367,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RealmExample/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Yes we can use that!!";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Yes we can use that";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -383,6 +396,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RealmExample/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Yes we can use that!!";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Yes we can use that";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

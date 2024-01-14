@@ -10,6 +10,8 @@ import UIKit
 final class MainCell: UICollectionViewCell {
     static let reuseId: String = "MainCell"
     
+    private let storageManager = StorageManager()
+    
     private lazy var image: UIImageView = {
         $0.translatesAutoresizingMaskIntoConstraints = false
         $0.clipsToBounds = true
@@ -32,14 +34,15 @@ final class MainCell: UICollectionViewCell {
         return $0
     }(UILabel())
     
-    func useImage(image: UIImage) {
-        self.image.image = image
-    }
-    
     func createTextForLabel(note: Note){
+        
+        if let image = UIImage(data: storageManager.loadImage(fileName: note.image + ".jpg")) {
+            self.image.image = image
+        }
+        
         self.label.text = note.title
         self.text.text = note.noteText
-        self.image.image = UIImage(named: note.image)
+        
     }
     
     override init(frame: CGRect) {

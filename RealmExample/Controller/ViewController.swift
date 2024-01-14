@@ -8,12 +8,11 @@
 import UIKit
 
 final class ViewController: UIViewController{
-
-    var textForTextFieldChange: String = "" // пришлось пойти на это, для того, чтобы можно было поменять текст в ячейке
-    var imageNameBySaved: String = "" // чтобы сохранить название фотографии, или путь к фотографии
-    var imageFromUse: UIImage?
     
     private let realmMeneger = RealmManager()
+    private let storageManager = StorageManager()
+    
+    var noteIdForImagePicker: String = "" // Для передачи названия id,через алерт ImagePicker, и для установки фотографии в правельное поле
     
     private lazy var mainCollection : UICollectionView = {
         $0.register(MainCell.self, forCellWithReuseIdentifier: MainCell.reuseId)
@@ -78,9 +77,6 @@ extension ViewController: UICollectionViewDataSource {
             if let note = realmMeneger.notes?[indexPath.item] {
                 cell.createTextForLabel(note: note)
             }
-            if let image = imageFromUse {
-                cell.useImage(image: image)
-            }
             return cell
         }
         return UICollectionViewCell()
@@ -114,13 +110,37 @@ extension ViewController: UICollectionViewDelegate {
             textField.backgroundColor = .lightGray
             textField.layer.cornerRadius = 20
             self.view.addSubview(textField)
+            
+            lazy var actionForBtnSaveNoteText = UIAction { _ in
+                if let text = textField.text {
+                    self.realmMeneger.updateNote(id: noteId, newTitle: text)
+                }
+                UIView.animate(withDuration: 0.5) {
+                    self.mainCollection.reloadData()
+                }
+                textField.removeFromSuperview()
+                btnSaveNoteText.removeFromSuperview()
+            }
+            lazy var btnSaveNoteText: UIButton = {
+                $0.setTitle("Сохранить текст", for: .normal)
+                $0.backgroundColor = .darkGray
+                $0.setTitleColor(.blue, for: .normal)
+                $0.translatesAutoresizingMaskIntoConstraints = false
+                $0.layer.cornerRadius = 16
+                return $0
+            }(UIButton(primaryAction: actionForBtnSaveNoteText))
+            self.view.addSubview(btnSaveNoteText)
             NSLayoutConstraint.activate([
                 textField.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 300),
                 textField.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
                 textField.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
                 textField.heightAnchor.constraint(equalToConstant: 200),
+                
+                btnSaveNoteText.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 50),
+                btnSaveNoteText.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20),
+                btnSaveNoteText.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20),
+                btnSaveNoteText.heightAnchor.constraint(equalToConstant: 50),
             ])
-            self.realmMeneger.updateNote(id: noteId, newTitle: self.textForTextFieldChange)
         }
         
         let imageEditBtn = UIAlertAction(title: "Поменять фотку", style: .default) { _ in
@@ -129,12 +149,12 @@ extension ViewController: UICollectionViewDelegate {
                 print("You use Unsplash")
             }
             let imagePicker = UIAlertAction(title: "UIImagePicker", style: .default) { _ in
+                self.noteIdForImagePicker = noteId
                 let imagePicker = UIImagePickerController()
                 imagePicker.sourceType = .camera
                 imagePicker.allowsEditing = true
                 imagePicker.delegate = self
                 self.present(imagePicker, animated: true)
-                self.realmMeneger.updateImage(id: noteId, imageName: self.imageNameBySaved)
             }
             let btnExitFromImageChange = UIAlertAction(title: "Выход", style: .cancel)
             
@@ -156,13 +176,7 @@ extension ViewController: UICollectionViewDelegate {
 
 extension ViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if let text = textField.text {
-            self.textForTextFieldChange = text
-        }
-        UIView.animate(withDuration: 0.5) {
-            self.mainCollection.reloadData()
-        }
-        textField.removeFromSuperview()
+        textField.endEditing(true)
         return true
     }
 }
@@ -173,9 +187,16 @@ extension ViewController: UINavigationControllerDelegate {
 extension ViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
+        let randomValue = Int.random(in: 0...100000) // Тут могут получится совпадения, если будет большое количество фотографии
+        let randomName = String(randomValue)
+        
         if let image = info[.editedImage] as? UIImage {
-            self.imageFromUse = image
+            if let imageData = image.jpegData(compressionQuality: 0.5) {
+                storageManager.saveImage(imageData: imageData, namePhoto: randomName)
+                self.realmMeneger.updateImage(id: self.noteIdForImagePicker, imageName: randomName)
+            }
         }
+        
         self.mainCollection.reloadData()
         picker.dismiss(animated: true )
     }
